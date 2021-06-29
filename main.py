@@ -30,20 +30,29 @@ def main() -> None:
             context.present(root_console)
 
             root_console.clear()
+
+
             
-            for event in tcod.event.wait():
+            try:   ### Avoid key value crash when pressing non-american keys ...
+            
+
+                for event in tcod.event.wait():
                
-                action = event_handler.dispatch(event)
+                    action = event_handler.dispatch(event)
+                    tempconsole = root_console
                 
-                if action is None:
-                    continue
+                    if action is None:
+                        continue
 
-                if isinstance(action, MovementAction):
-                    player_x += action.dx
-                    player_y += action.dy
+                    if isinstance(action, MovementAction):
+                        player_x += action.dx
+                        player_y += action.dy
 
-                elif isinstance(action, EscapeAction):
-                    raise SystemExit()
+                    elif isinstance(action, EscapeAction):
+                        raise SystemExit()
+
+            except ValueError:  ### ... here
+                pass
 
 
 if __name__ == "__main__":
