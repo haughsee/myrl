@@ -39,7 +39,7 @@ def main() -> None:
                 for event in tcod.event.wait():
                
                     action = event_handler.dispatch(event)
-                    tempconsole = root_console
+
                 
                     if action is None:
                         continue
