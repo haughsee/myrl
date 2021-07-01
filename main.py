@@ -13,7 +13,7 @@ def main() -> None:
     player_x: int = screen_width // 2
     player_y: int = screen_height // 2
 
-    tileset = tcod.tileset.load_tilesheet("newmyrl/data/dejavu16x16_gs_tc.png", 32, 8, tcod.tileset.CHARMAP_TCOD)
+    tileset = tcod.tileset.load_tilesheet("data/dejavu16x16_gs_tc.png", 32, 8, tcod.tileset.CHARMAP_TCOD)
     
     event_handler = game.input_handlers.EventHandler()
 
