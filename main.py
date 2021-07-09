@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import random
 
 import tcod
 
@@ -7,6 +8,7 @@ import game.engine
 import game.entity
 import game.game_map
 import game.input_handlers
+import game.procgen
 
 
 def main() -> None:
@@ -16,16 +18,24 @@ def main() -> None:
     map_width = 80
     map_height = 45
 
+    room_max_size = 10
+    room_min_size = 6
+    max_rooms = 30
+
     tileset = tcod.tileset.load_tilesheet("data/dejavu16x16_gs_tc.png", 32, 8, tcod.tileset.CHARMAP_TCOD)
 
     engine = game.engine.Engine()
-    engine.game_map = game.game_map.GameMap(engine, map_width, map_height)
-    engine.game_map.tiles[1:-1, 1:-1] = 1
-    engine.game_map.tiles[30:33, 22] = 0
-    engine.player = game.entity.Entity(engine.game_map, screen_width // 2, screen_height // 2, "@", (255, 255, 255))
 
-    game.entity.Entity(engine.game_map, screen_width // 2 - 5, screen_height // 2, "@", (255, 255, 0))  # NPC
-
+    engine.rng = random.Random()
+    engine.game_map = game.procgen.generate_dungeon(
+        max_rooms=max_rooms,
+        room_min_size=room_min_size,
+        room_max_size=room_max_size,
+        map_width=map_width,
+        map_height=map_height,
+        engine=engine,
+    )
+    engine.player = game.entity.Entity(engine.game_map, *engine.game_map.enter_xy, "@", (255, 255, 255))
     event_handler = game.input_handlers.EventHandler(engine)
 
     with tcod.context.new(

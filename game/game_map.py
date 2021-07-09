@@ -17,6 +17,7 @@ class GameMap:
 
         self.tiles = np.zeros((width, height), dtype = np.uint8, order="F")
         self.entities: Set[game.entity.Entity] = set()
+        self.enter_xy = (width // 2, height // 2) # Entrance coordinates.
 
     def in_bounds(self, x: int, y: int) -> bool:
         """Return true if x and y are within the bounds of the map."""
